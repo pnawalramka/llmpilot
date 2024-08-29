@@ -49,10 +49,10 @@ def llm_response(llm, input_text):
     return llm_res.content if isinstance(llm, ChatOpenAI) else llm_res
 
 
-def query_sql(query_text):
+def query_db(query_text):
     llm = get_llm()
-    sqlite_db_path = db_path
-    db = SQLDatabase.from_uri(f"sqlite:///{sqlite_db_path}")
+    db = SQLDatabase.from_uri(db_path)
     chain = SQLDatabaseChain.from_llm(llm, db, return_direct = True)
     llm_res = chain.invoke(query_text)
     print(llm_res)
+    return llm_res
