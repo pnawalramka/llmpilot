@@ -5,6 +5,7 @@ import boto3
 from langchain_aws import BedrockLLM
 from langchain_openai import OpenAI
 from langchain_openai import ChatOpenAI
+from langchain_ollama import OllamaLLM
 from langchain_community.utilities import SQLDatabase
 from langchain_experimental.sql import SQLDatabaseChain
 
@@ -12,7 +13,7 @@ from langchain_experimental.sql import SQLDatabaseChain
 openai_api_key = os.getenv('OPENAI_API_KEY')
 model_choice = os.getenv('MODEL_CHOICE')
 db_path = os.getenv('DB_PATH')
-
+model_choice = 'deepseek'
 
 class LLMPilot:
     def __init__(self):
@@ -76,6 +77,14 @@ class LLMPilot:
                     model_id='mistral.mistral-large-2407-v1:0',
                     model_kwargs={
                     'temperature': 0.7,
+                })
+            elif model_choice == 'deepseek':
+                print('llm = deepseek-coder-v2')
+                self._llm = OllamaLLM(
+                    model='deepseek-coder-v2-32k',
+                    base_url='127.0.0.1:11434', # on-premise
+                    model_kwargs={
+                    'temperature': 0.6,
                 })
         return self._llm
 
